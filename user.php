@@ -5,7 +5,7 @@ $surname = 'Petrov';
 $age = '28';
 $email = 'ivan-myasoyedov@stud.onu.edu.ua';
 var_dump($_POST);
-var_dump($_GET);
+//var_dump($_GET);
 ?>
 <!DOCTYPE html>
 <html lang="en">

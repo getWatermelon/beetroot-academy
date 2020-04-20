@@ -4,8 +4,8 @@
 //$surname = 'Petrov';
 //$age = '28';
 //$email = 'ivan-myasoyedov@stud.onu.edu.ua';
-var_dump($_POST);
-var_dump($_GET);
+//var_dump($_POST);
+//var_dump($_GET);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -18,7 +18,7 @@ var_dump($_GET);
 <br />
 <h1>Your Name <?php echo $_POST['name']?> and your gender <?php echo $_POST['gender'][0]?></h1>
 <div class="container">
-    <form method="post" action="user.php">
+    <form method="post" action="user2.php">
         <div class="form-group">
             <label for="formGroupExampleInput">Name</label>
             <input type="text" class="form-control" id="formGroupExampleInput" name="name"  placeholder="Example input" value="<?=$_POST['name']?>">
