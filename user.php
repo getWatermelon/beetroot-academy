@@ -1,11 +1,25 @@
 <?php
-$value = 'Hello from PHP 7.2';
-$name = 'Ivan';
-$surname = 'Petrov';
-$age = '28';
-$email = 'ivan-myasoyedov@stud.onu.edu.ua';
-var_dump($_POST);
-var_dump($_GET);
+//$value = 'Hello from PHP 7.2';
+//$name = 'Ivan';
+//$surname = 'Petrov';
+//$age = '28';
+//$email = 'ivan-myasoyedov@stud.onu.edu.ua';
+//var_dump($_POST);
+//var_dump($_GET);
+
+if (!empty($_POST)) {
+    $error = "";
+    if (empty($_POST['name'])) {
+        $error = "Имя";
+    }
+    if (empty($_POST['surname'])) {
+        $error = "Фамииля";
+    }
+    if (empty($_POST['age']) || $_POST['age'] < 1) {
+        $error = "Возраст";
+    }
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -19,6 +33,7 @@ var_dump($_GET);
 <h1>Your Name <?php echo $_POST['name']?> and your gender <?php echo $_POST['gender'][0]?></h1>
 <div class="container">
 <form method="post" action="user.php">
+    <h3 style="color:red"><?=$error ?></h3>
     <div class="form-group">
         <label for="formGroupExampleInput">Имя</label>
         <input type="text" class="form-control" id="formGroupExampleInput" name="name"  placeholder="Example input" value="<?=$_POST['name'] ?? 'Mike'?>">
