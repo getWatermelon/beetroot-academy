@@ -12,22 +12,29 @@
 
 if (!empty($_POST)) {
     $error = [];
+
     if (empty($_POST['name'])) {
         $error['name'] = 'Имя не может быть пустым';
     }
+
     if (empty($_POST['surname'])) {
         $error['surname'] = 'Фамииля не может быть пустой';
     }
+
     if (empty($_POST['age']) || $_POST['age'] < 1) {
         $error['age'] = 'Возраст задан некорректно';
     }
+
     if (empty($_POST['age']) || $_POST['email'] < 1) {
         $error['email'] = 'Почта задана некорректно';
     }
+
     if (empty($_POST['password']) || $_POST['email'] < 1) {
         $error['password'] = 'Пароль задан некорректно';
     }
+
     $lang = (!empty($_GET['lang'])) ? $_GET['lang'] : ru;
+
     $labels = [
             'ru' => ['name'=> 'Имя', 'surname' => 'Фамилия']
     ];
@@ -37,7 +44,7 @@ if (!empty($_POST)) {
             break;
         case 'ua':
             break;
-        case 'en';
+        case 'en':
             break;
 
     }
