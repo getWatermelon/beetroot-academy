@@ -8,7 +8,7 @@
 <body>
 <br />
 <div class="container">
-    <form method="post" action="user2.php">
+    <form method="post" action="index2.php">
         <h1>Congratulations! You have been registered!</h1>
         <h2 class="form-group">
             Your name is: <?=$_POST['name']?>
