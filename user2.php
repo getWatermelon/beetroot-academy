@@ -56,6 +56,81 @@ if (!empty($_POST)) {
 
 }
 
+
+var_dump(empty(array()));
+
+
+
+$users = [
+    [
+        'name' => 'Bob',
+        'surname' => 'Martin',
+        'age' => 75,
+        'gender' => 'man',
+        'avatar' => 'https://i.ytimg.com/vi/sDnPs_V8M-c/hqdefault.jpg',
+        'animals' => ['dog']
+    ],
+    [
+        'name' => 'Alice',
+        'surname' => 'Merton',
+        'age' => 25,
+        'gender' => 'woman',
+        'avatar' => 'https://i.scdn.co/image/d44a5d71596b03b5dc6f5bbcc789458700038951',
+        'animals' => ['dog', 'cat']
+    ],
+    [
+        'name' => 'Jack',
+        'surname' => 'Sparrow',
+        'age' => 45,
+        'gender' => 'man',
+        'avatar' => 'https://pbs.twimg.com/profile_images/427547618600710144/wCeLVpBa_400x400.jpeg',
+        'animals' => []
+    ],
+    [
+        'name' => 'Angela',
+        'surname' => 'Merkel',
+        'age' => 65,
+        'gender' => 'woman',
+        'avatar' => 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Besuch_Bundeskanzlerin_Angela_Merkel_im_Rathaus_K%C3%B6ln-09916.jpg/330px-Besuch_Bundeskanzlerin_Angela_Merkel_im_Rathaus_K%C3%B6ln-09916.jpg',
+        'animals' => ['dog', 'parrot', 'horse']
+    ]
+];
+
+
+$names = array_column($users, 'name');
+$age = array_column($users, 'age');
+
+var_dump($names);
+
+$key = array_search(25, $names);
+
+var_dump($key);
+
+
+if($key !== false){
+    echo "The age found!";
+}
+else{
+    echo "NOT FOUND";
+}
+
+echo "<br />";
+
+var_dump($age);
+
+rsort($age);
+
+var_dump($age);
+
+var_dump(max($age));
+
+
+
+
+//exit();
+
+
+
 ?>
 
 
@@ -74,7 +149,7 @@ if (!empty($_POST)) {
         <a href="?lang=ua" class="badge badge-secondary">Украинский</a>
         <a href="?lang=en" class="badge badge-success">English</a>
     </div>
-    <form method="post" action="user2.php">
+    <form method="post" action="stats.php">
         <div class="form-group">
             <label for="formGroupExampleInput"><?=$translation['name']?></label>
             <input type="text" class="form-control" id="formGroupExampleInput" name="name"  placeholder="Example input" value="<?=$_POST['name']?>">
@@ -121,6 +196,7 @@ if (!empty($_POST)) {
             <?php endif; ?>
         </div>
         <div class="form-group">
+            <? $gender = empty($_POST['gender'])?>
             <label for="exampleFormControlSelect1"><?=$translation['gender']?></label>
             <select multiple class="form-control" id="exampleFormControlSelect1" name="gender[]">
                 <option></option>
