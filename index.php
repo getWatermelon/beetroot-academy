@@ -79,7 +79,7 @@ if (!empty($_POST)) {
         <a href="?lang=ua" class="badge badge-secondary">Украинский</a>
         <a href="?lang=en" class="badge badge-success">English</a>
     </div>
-    <form method="post" action="index.php?lang">
+    <form method="post" action="index.php">
         <div class="form-group">
             <label for="formGroupExampleInput"><?=$translation['name']?></label>
             <input type="text" class="form-control" id="formGroupExampleInput" name="name"  placeholder="Example input" value="<?=$_POST['name']?>">
