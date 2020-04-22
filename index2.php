@@ -29,7 +29,7 @@
             Your gender is: <?=$_POST['gender']?>
         </h2>
         <h2 class="form-group">
-            The language you have selected: <?=$_POST['language']?>
+            The language(s) you have selected: <?=implode(", ", $_POST['languages'])?>
         </h2>
     </form>
 </div>

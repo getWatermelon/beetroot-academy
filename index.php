@@ -1,89 +1,61 @@
 <?php
-//echo "Hello world form PHP!";
-//phpinfo();
-
-define('YEAR', 2020);
-
-define('USD_COURSE', 27.397);
-
-$usdInUah = round(100 / USD_COURSE, 2);
-$uahInUsd = round(100 * USD_COURSE,2);
-
-$name = 'Ivan';
-$surname = 'Petrov';
-$age = '28';
-$year = '2020';
-$born =  $year - $age;
-$century =  ceil($year / 1000);
-
-$bool = true;
-$boolfalse = false;
-
-
-echo "My name is " . $name . " ". $surname . " " . ($year - $age);
-
-echo "<br />";
-
-echo "Name: " . "" .  $name . " " ."Age: " . " " .  $age . " " . "Days: " . ($age * 365);
-
-echo "<br />";
-
-echo "The year is: " . ceil(YEAR / 1000);
-
-echo "<br />";
-
-echo "My name is $name $surname";
-
-echo "<br />";
-
-echo "Century: $century";
-
-echo "<br />";
-
-echo "100 $ сегодня стоят $usdInUah гривен";
-
-echo "<br />";
-
-echo "100 грн сегодня стоят $uahInUsd  долларов";
-
-echo "<br />";
-
-var_dump((bool)$age);
-
-//$arr = [];
-//$arr[] = $name;
-//$arr = 'Kardakov';
-//var_dump($arr[1]);
-
-$assoc = [];
-$assoc['name'] = $name;
-$assoc['surname'] = $surname;
-
-echo "<br />";
-
-var_dump($assoc);
-
-echo "<br />";
-
-$arr = [];
-$arr[] = $name;
-$arr[] = $surname;
-$arr[] = $age;
-$arr[] = $year;
-$arr[] = $century;
-
-$arrAssoc = [
-    'name' => 'Ivan',
-    'surname' => 'Petrov',
-    'age' => '28',
-    'year' => '2020',
-    'century' => '3'
-];
-
-echo "Name: $arr[0],  Surname:  $arr[1],  Age: $arr[2],  Year: $arr[3], Century: $arr[4]";
-
-echo "<br />";
-
-echo "Name: {$arrAssoc['name']}, Surname: {$arrAssoc['surname']}, Age: {$arrAssoc['age']}, Year: {$arrAssoc['year']}, Century: {$arrAssoc['century']}";
-
+$languages =[];
 ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+<body>
+<br />
+<div class="container">
+    <form method="post" action="index2.php">
+        <h1>Registration</h1>
+        <div class="form-group">
+            <label for="formGroupExampleInput">Name</label>
+            <input type="text" class="form-control" id="formGroupExampleInput" name="name"  placeholder="Example input" value="<?=$_POST['name']?>">
+        </div>
+        <div class="form-group">
+            <label for="formGroupExampleInput">Surname</label>
+            <input type="text" class="form-control" id="formGroupExampleInput" name="surname" placeholder="Example input" value="<?=$_POST['surname']?>">
+        </div>
+        <div class="form-group">
+            <label for="formGroupExampleInput">Email</label>
+            <input type="email" class="form-control" id="formGroupExampleInput" name="email" placeholder="Example input" value="<?=$_POST['email']?>">
+        </div>
+        <div class="form-group">
+            <label for="formGroupExampleInput">Age</label>
+            <input type="number" class="form-control" id="formGroupExampleInput" name="age" placeholder="Example input" value="<?=$_POST['age']?>">
+        </div>
+        <div class="form-group">
+            <label for="formGroupExampleInput">Password</label>
+            <input type="password" class="form-control" id="formGroupExampleInput"name="password" placeholder="Example input" value="<?=$_POST['password']?>">
+        </div>
+        <div class="form-group">
+            <label for="exampleFormControlSelect1">Example select</label>
+            <select class="form-control" id="exampleFormControlSelect1" name="gender">
+                <option>Man</option>
+                <option>Woman</option>
+                <option>Others</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="exampleFormControlSelect1">Example select</label>
+            <select multiple class="form-control" id="exampleFormControlSelect1" name="languages[]">
+                <option>English</option>
+                <option>Russian</option>
+                <option>Ukrainian</option>
+                <option>German</option>
+                <option>Polish</option>
+                <option>French</option>
+                <option>Japanese</option>
+                <option>Chinese</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Register</button>
+    </form>
+</div>
+</body>
+</html>
