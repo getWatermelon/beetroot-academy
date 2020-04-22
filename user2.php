@@ -1,55 +1,63 @@
 <?php
-//$value = 'Hello from PHP 7.2';
-//$name = 'Ivan';
-//$surname = 'Petrov';
-//$age = '28';
-//$email = 'ivan-myasoyedov@stud.onu.edu.ua';
-//var_dump($_POST);
-//var_dump($_GET);
 
 //error_reporting(E_ALL);
+//ini_set('display_errors', true);
+
+$lang = (!empty($_GET['lang'])) ? $_GET['lang'] : 'ru';
+
+$labels = [
+    'ru' => ['name'=> 'Имя', 'surname' => 'Фамилия', 'email' => 'Почта', 'age' => 'Возраст', 'password' => 'Пароль', 'gender' => 'Пол'],
+    'ua' => ['name'=> "Им'я", 'surname' => 'Прізвище', 'email' => 'Пошта', 'age' => 'Вік', 'password' => 'Пароль', 'gender' => 'Стать'],
+    'en' => ['name'=> 'Name', 'surname' => 'Surname', 'email' => 'Email', 'age' => 'Age', 'password' => 'Password', 'gender' => 'Gender']
+];
+
+switch($lang) {
+
+    case 'ru':
+        $translation = $labels['ru'];
+        break;
+    case 'ua':
+        $translation = $labels['ua'];
+        break;
+    case 'en':
+        $translation = $labels['en'];
+        break;
+
+}
 
 
 if (!empty($_POST)) {
+
     $error = [];
 
     if (empty($_POST['name'])) {
-        $error['name'] = 'Имя не может быть пустым';
+        $error['name'] = 'Поле имя не может быть пустым';
     }
 
     if (empty($_POST['surname'])) {
-        $error['surname'] = 'Фамииля не может быть пустой';
+        $error['surname'] = 'Поле фамииля не может быть пустой';
     }
 
     if (empty($_POST['age']) || $_POST['age'] < 1) {
         $error['age'] = 'Возраст задан некорректно';
     }
 
-    if (empty($_POST['age']) || $_POST['email'] < 1) {
+    if (empty($_POST['age'])) {
         $error['email'] = 'Почта задана некорректно';
     }
 
-    if (empty($_POST['password']) || $_POST['email'] < 1) {
-        $error['password'] = 'Пароль задан некорректно';
+    if (empty($_POST['password'])) {
+        $error['password'] = 'Поле пароль не может быть пустым';
     }
 
-    $lang = (!empty($_GET['lang'])) ? $_GET['lang'] : ru;
-
-    $labels = [
-            'ru' => ['name'=> 'Имя', 'surname' => 'Фамилия']
-    ];
-
-    switch($lang) {
-        case 'ru':
-            break;
-        case 'ua':
-            break;
-        case 'en':
-            break;
-
+    if (empty($_POST['gender'])) {
+        $error['gender'] = 'Поле пол не может быть пустым';
     }
+
 }
+
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -60,67 +68,71 @@ if (!empty($_POST)) {
 </head>
 <body>
 <br />
-<h1>Your Name <?php echo $_POST['name']?> and your gender <?php echo $_POST['gender'][0]?></h1>
 <div class="container">
     <div class="float-right">
         <a href="?lang=ru" class="badge badge-primary">Русский</a>
         <a href="?lang=ua" class="badge badge-secondary">Украинский</a>
-        <a href="?lang=" class="badge badge-success">Английский</a>
+        <a href="?lang=en" class="badge badge-success">English</a>
     </div>
     <form method="post" action="user2.php">
-<!--        <h3 style="color:red">--><?//=implode("<br />", $error)?><!--</h3>-->
         <div class="form-group">
-            <label for="formGroupExampleInput">Name</label>
+            <label for="formGroupExampleInput"><?=$translation['name']?></label>
             <input type="text" class="form-control" id="formGroupExampleInput" name="name"  placeholder="Example input" value="<?=$_POST['name']?>">
             <?php if(!empty($error['name'])) : ?>
-                <small id="passwordHelpBlock" class="from-text text-muted">
+                <small style="color:red" id="passwordHelpBlock" class="from-text">
                     <?= $error['name'] ?>
                 </small>
             <?php endif; ?>
         </div>
         <div class="form-group">
-            <label for="formGroupExampleInput">Surname</label>
+            <label for="formGroupExampleInput"><?=$translation['surname']?></label>
             <input type="text" class="form-control" id="formGroupExampleInput" name="surname" placeholder="Example input" value="<?=$_POST['surname']?>">
         <?php if(!empty($error['surname'])) : ?>
-            <small id="passwordHelpBlock" class="from-text text-muted">
+            <small style="color:red" id="passwordHelpBlock" class="from-text">
                 <?= $error['surname'] ?>
             </small>
         <?php endif; ?>
         </div>
         <div class="form-group">
-            <label for="formGroupExampleInput">Email</label>
+            <label for="formGroupExampleInput"><?=$translation['email']?></label>
             <input type="email" class="form-control" id="formGroupExampleInput" name="email" placeholder="Example input" value="<?=$_POST['email']?>">
             <?php if(!empty($error['email'])) : ?>
-                <small id="passwordHelpBlock" class="from-text text-muted">
+                <small style="color:red" id="passwordHelpBlock" class="from-text">
                     <?= $error['email'] ?>
                 </small>
             <?php endif; ?>
         </div>
         <div class="form-group">
-            <label for="formGroupExampleInput">Age</label>
+            <label for="formGroupExampleInput"><?=$translation['age']?></label>
             <input type="number" class="form-control" id="formGroupExampleInput" name="age" placeholder="Example input" value="<?=$_POST['age']?>">
             <?php if(!empty($error['age'])) : ?>
-                <small id="passwordHelpBlock" class="from-text text-muted">
+                <small style="color:red" id="passwordHelpBlock" class="from-text">
                     <?= $error['age'] ?>
                 </small>
             <?php endif; ?>
         </div>
         <div class="form-group">
-            <label for="formGroupExampleInput">Password</label>
+            <label for="formGroupExampleInput"><?=$translation['password']?></label>
             <input type="password" class="form-control" id="formGroupExampleInput"name="password" placeholder="Example input" value="<?=$_POST['password']?>">
             <?php if(!empty($error['password'])) : ?>
-                <small id="passwordHelpBlock" class="from-text text-muted">
+                <small style="color:red" id="passwordHelpBlock" class="from-text">
                     <?= $error['password'] ?>
                 </small>
             <?php endif; ?>
         </div>
         <div class="form-group">
-            <label for="exampleFormControlSelect1">Example select</label>
+            <label for="exampleFormControlSelect1"><?=$translation['gender']?></label>
             <select multiple class="form-control" id="exampleFormControlSelect1" name="gender[]">
-                <option>Man</option>
-                <option>Woman</option>
-                <option>Others</option>
+                <option></option>
+                <option <?=$_POST['gender'] == 'Man' ? 'selected': ''?>>Man</option>
+                <option <?=$_POST['gender'] == 'Woman' ? 'selected': ''?>>Woman</option>
+                <option <?=$_POST['gender'] == 'Other' ? 'selected': ''?>>Others</option>
             </select>
+            <?php if(!empty($error['gender'])) : ?>
+                <small style="color:red" id="passwordHelpBlock" class="from-text">
+                    <?= $error['gender'] ?>
+                </small>
+            <?php endif; ?>
         </div>
         <button type="submit" class="btn btn-primary">Register</button>
     </form>
