@@ -56,6 +56,8 @@ $jackImage = $users[$jackId]['avatar'];
 define('MERKEL_SURNAME', 'Merkel');
 $merkelId = array_search(MERKEL_SURNAME, $surnames);
 $merkelImage = $users[$merkelId]['avatar'];
+ksort($users[$merkelId]['animals']);
+
 
 $randomUserId = rand(0, count($users) - 1);
 $randomUser = $users[$randomUserId];
