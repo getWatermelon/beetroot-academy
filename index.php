@@ -85,5 +85,3 @@ echo "Name: $arr[0],  Surname:  $arr[1],  Age: $arr[2],  Year: $arr[3], Century:
 echo "<br />";
 
 echo "Name: {$arrAssoc['name']}, Surname: {$arrAssoc['surname']}, Age: {$arrAssoc['age']}, Year: {$arrAssoc['year']}, Century: {$arrAssoc['century']}";
-
-?>

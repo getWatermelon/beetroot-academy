@@ -21,6 +21,7 @@ if (!empty($_POST)) {
 }
 
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -48,7 +49,7 @@ if (!empty($_POST)) {
     </div>
     <div class="form-group">
         <label for="formGroupExampleInput">Почта</label>
-        <input type="text" class="form-control" id="formGroupExampleInput"name="email" placeholder="Example input" value="<?=$_POST['email'] ?? 'ivan-myasoyedov@stud.onu.edu.ua'?>">
+        <input type="text" class="form-control" id="formGroupExampleInput" name="email" placeholder="Example input" value="<?=$_POST['email'] ?? 'ivan-myasoyedov@stud.onu.edu.ua'?>">
     </div>
     <div class="form-group">
         <label for="exampleFormControlSelect1">Example select</label>

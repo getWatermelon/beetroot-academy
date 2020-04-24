@@ -28,7 +28,7 @@
         </div>
         <div class="form-group">
             <label for="formGroupExampleInput">Password</label>
-            <input type="password" class="form-control" id="formGroupExampleInput"name="password" placeholder="Example input" value="<?=$_POST['password']?>">
+            <input type="password" class="form-control" id="formGroupExampleInput" name="password" placeholder="Example input" value="<?=$_POST['password']?>">
         </div>
         <div class="form-group">
             <label for="exampleFormControlSelect1">Example select</label>
