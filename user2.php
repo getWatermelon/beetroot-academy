@@ -6,9 +6,9 @@
 $lang = (!empty($_GET['lang'])) ? $_GET['lang'] : 'ru';
 
 $labels = [
-    'ru' => ['name'=> 'Имя', 'surname' => 'Фамилия', 'email' => 'Почта', 'age' => 'Возраст', 'password' => 'Пароль', 'gender' => 'Пол'],
-    'ua' => ['name'=> "Им'я", 'surname' => 'Прізвище', 'email' => 'Пошта', 'age' => 'Вік', 'password' => 'Пароль', 'gender' => 'Стать'],
-    'en' => ['name'=> 'Name', 'surname' => 'Surname', 'email' => 'Email', 'age' => 'Age', 'password' => 'Password', 'gender' => 'Gender']
+    'ru' => ['name'=> 'Имя', 'surname' => 'Фамилия', 'email' => 'Почта', 'age' => 'Возраст', 'password' => 'Пароль', 'gender' => 'Пол', 'title' => 'Регистрация', 'button' => 'Зарегистрироваться'],
+    'ua' => ['name'=> "Им'я", 'surname' => 'Прізвище', 'email' => 'Пошта', 'age' => 'Вік', 'password' => 'Пароль', 'gender' => 'Стать', 'title' => 'Реєстрація', 'button' => 'Зареєструватися'],
+    'en' => ['name'=> 'Name', 'surname' => 'Surname', 'email' => 'Email', 'age' => 'Age', 'password' => 'Password', 'gender' => 'Gender', 'title' => 'Registration', 'button' => 'Register']
 ];
 
 switch($lang) {
@@ -153,6 +153,7 @@ var_dump(max($age));
 <body>
 <br />
 <div class="container">
+    <h1><?=$translation['title']?></h1>
     <div class="float-right">
         <a href="?lang=ru" class="badge badge-primary">Русский</a>
         <a href="?lang=ua" class="badge badge-secondary">Украинский</a>
@@ -219,7 +220,7 @@ var_dump(max($age));
                 </small>
             <?php endif; ?>
         </div>
-        <button type="submit" class="btn btn-primary">Register</button>
+        <button type="submit" class="btn btn-primary"><?=$translation['button']?></button>
     </form>
 </div>
 </body>
