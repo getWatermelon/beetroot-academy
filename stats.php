@@ -1,8 +1,5 @@
 <?php
 
-error_reporting(E_ALL);
-ini_set('display_errors', true);
-
 $users = [
     [
         'name' => 'Bob',
@@ -127,7 +124,7 @@ else{
         </tr>
         </tbody>
     </table>
-    <a href="user2.php">На страницу регистрации</a>
+    <a href="user.php">На страницу регистрации</a>
 </div>
 </body>
 </html>
