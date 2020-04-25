@@ -72,6 +72,125 @@ else{
     $oldestUsersInfo[1] = $oldestUser['name'] . " " . $oldestUser['surname'] . ":" . " " . $oldestUser['age'];
 }
 
+
+
+//foreach ($users as $key => &$user){
+//    echo "Key is: $key" . " " . strtoupper($user['name']) . '<br />';
+//    $user['name'] = strtoupper($users['name']);
+//
+//}
+
+
+$animals = [];
+foreach ($users as $user) {
+    $animals = array_merge($animals, $user['animals']);
+}
+
+$animalsFilter = array_unique($animals);
+//
+//print_r($animalsFilter); exit;
+
+
+if (!empty($_GET['sort'])){
+    switch ($_GET['sort']) {
+        case 'id':
+            if(!empty($_GET['order']) && $_GET['order'] == 'desc') {
+                krsort($users);
+            }
+            else {
+                ksort($users);
+            }
+            $users = array_values($users);
+            break;
+    }
+}
+
+if(!empty($_GET['filter'])) {
+    switch ($_GET['filter']){
+        case  'man':
+            foreach ($users as $key => $user) {
+                if ($user['gender'] == 'man') {
+                    unset($user[$key]);
+
+                }
+            }
+            break;
+    }
+}
+if(!empty($_GET['filter'])) {
+    switch ($_GET['filter']){
+        case  'man':
+            foreach ($users as $key => $user) {
+                if ($user['gender'] !== 'man') {
+                    unset($users[$key]);
+
+                }
+            }
+            break;
+        case  'woman':
+            foreach ($users as $key => $user) {
+                if ($user['gender'] !== 'woman') {
+                    unset($users[$key]);
+
+                }
+            }
+            break;
+        case  'covid':
+            foreach ($users as $key => $user) {
+                if ($user['age'] < 60) {
+                    unset($users[$key]);
+                }
+            }
+            break;
+//        case  'dog':
+//            foreach ($users as $key => $user) {
+//                $index = array_search('dog', $users['animals']);
+//                if (false === $index) {
+//                    unset($users[$key]);
+//                }
+//            }
+//            break;
+//        case  'cat':
+//            foreach ($users as $key => $user) {
+//                $index = array_search('cat', $users['animals']);
+//                if (false === $index) {
+//                    unset($users[$key]);
+//                }
+//            }
+//            break;
+//        case  'parrot':
+//            foreach ($users as $key => $user) {
+//                $index = array_search('parrot', $users['animals']);
+//                if (false === $index) {
+//                    unset($users[$key]);
+//                }
+//            }
+//            break;
+//        case  'horse':
+//            foreach ($users as $key => $user) {
+//                $index = array_search('horse', $users['animals']);
+//                if (false === $index) {
+//                    unset($users[$key]);
+//                }
+//            }
+//            break;
+//
+        case  'dog':
+        case  'cat':
+        case  'parrot':
+        case  'horse':
+        foreach ($users as $key => $user) {
+            $index = array_search($_GET['filter'], $users['animals']);
+            if (false === $index) {
+                unset($users[$key]);
+            }
+        }
+        break;
+    }
+
+
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -87,45 +206,41 @@ else{
 <div class="container">
     <h1>Статистика</h1>
     <ul>
-    <li><?="$oldestUsersInfo[0] $oldestUsersInfo[1]"?></li>
-        <li>Общее количество пользователей: <?=count($users)?></li>
+<!--    <li>--><?//="$oldestUsersInfo[0] $oldestUsersInfo[1]"?><!--</li>-->
+<!--        <li>Общее количество пользователей: --><?//=count($users)?><!--</li>-->
     </ul>
     <table class="table table-striped">
         <tr>
-            <th>#</th>
-            <th>Name</th>
-            <th>Surname</th>
-            <th>Age</th>
-            <th>Avatar</th>
-            <th>Animals</th>
+            <th> <a href="?sort=id&order=<?=!empty($_GET['order']) && $_GET['order'] == 'desc' ? 'asc': 'desc' ?>> # </th>
+            <th> <a href="?sort=name&order=asc">Name</th>
+            <th><a href="?sort=surname">Surname</th>
+            <th><a href="?sort=age">Age</th>
+            <th><a href="?sort=avatar">Avatar</th>
         </tr>
         <tbody>
-        <tr>
-            <td><?=$jackId?></td>
-            <td><?=$users[$jackId]['name']?></td>
-            <td><?=$users[$jackId]['surname']?></td>
-            <td><?=$users[$jackId]['age']?></td>
-            <td><?="<img src='$jackImage' height = '100' width = '100' alt='jackImage'>"?></td>
-            <td></td>
+        <?php foreach ($users as $key => $user) : ?>
+        <?php $id = (!empty($_GET['sort'] && $_GET['sort'] == 'id' && $_GET['sort'] == 'desc') ? count($users) - $key: $key + 1)?>
+        <tr style="background-color: <?=($key%2===0) ? '#aaa' : '#fff'?>">
+            <td><?=$key + 1?></td>
+            <td><?=$user['name'] ?></td>
+            <td><?=$user['surname'] ?></td>
+            <td><?=$user['age'] ?></td>
+            <td><img src="<?=$user['avatar']?>" style="width:60px"/></td>
         </tr>
-        <tr>
-            <td><?=$randomUserId?></td>
-            <td><?=$randomUser['name']?></td>
-            <td><?=$randomUser['surname']?></td>
-            <td><?=$randomUser['age']?></td>
-            <td><?="<img src='$randomUserImage' height = '100' width = '100' alt='randomUserImage'>"?></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td><?=$merkelId?></td>
-            <td><?=$users[$merkelId]['name']?></td>
-            <td><?=$users[$merkelId]['surname']?></td>
-            <td><?=$users[$merkelId]['age']?></td>
-            <td><?="<img src='$merkelImage' height = '100' width = '100' alt=''>"?></td>
-            <td><?=implode(", ", $users[$merkelId]['animals'])?></td>
-        </tr>
+        <?php endforeach; ?>
         </tbody>
     </table>
+    <form method="get">
+    <select name="filter">
+        <option value="man">Man</option>>
+        <option value="woman">Woman</option>>
+        <option value="covid">Age > 60</option>>
+        <?php foreach ($animalsFilter as $animal): ?>
+        <option value="<?=$animal?>"><?=$animal?></option>
+        <?php endforeach; ?>
+    </select>
+        <input type="submit">
+        </form>
     <a href="user.php">На страницу регистрации</a>
 </div>
 </body>
