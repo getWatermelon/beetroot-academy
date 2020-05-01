@@ -78,9 +78,7 @@
     <div class="desk">
         <?php for ($i = 1; $i <= 64; $i++): ?>
             <?php $color = 'sandybrown' ?>
-            <?php if ((ceil($i / 8) % 2 === 0) && $i % 2 !== 0) : ?>
-                <?php $color = 'saddlebrown' ?>
-            <?php elseif ((ceil($i / 8) % 2 !== 0) && $i % 2 === 0) : ?>
+            <?php if ((ceil($i / 8) % 2 === 0) && $i % 2 !== 0 || (ceil($i / 8) % 2 !== 0) && $i % 2 === 0) : ?>
                 <?php $color = 'saddlebrown' ?>
             <?php endif;?>
             <?php if (ceil($i / 8) == 2): ?>
