@@ -71,8 +71,8 @@ function getDescription(object $item)
 
 function searchFunction(object $article)
 {
-    $article->description = preg_replace("/" . $_POST['search'] . "/i", '<mark class="mark">' . $_POST['search'] . '</mark>', $article->description);
-    $article->title = preg_replace("/" . $_POST['search'] . "/i", '<mark class="mark">' . $_POST['search'] . '</mark>', $article->title);
+    $article->description = preg_replace("/" . $_POST['search'] . "/iu", '<mark class="mark">' . $_POST['search'] . '</mark>', $article->description);
+    $article->title = preg_replace("/" . $_POST['search'] . "/iu", '<mark class="mark">' . $_POST['search'] . '</mark>', $article->title);
     return $article;
 }
 
