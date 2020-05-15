@@ -61,6 +61,3 @@ $items = loadAll();
 </div>
 </body>
 </html>
-<!--        --><?php //if(!empty($_POST['search'])){
-//            $article = searchFunction($article);
-//        } ?>
