@@ -1,13 +1,10 @@
 <?php
 
 require 'functions.php';
-
 $items = loadAll();
 //$xml = loadRss('https://dumskaya.net/rssnews/');
 
-
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,7 +13,7 @@ $items = loadAll();
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <style>
-        .mark {
+        .search {
             background: blue;
             color: orangered;
         }
@@ -24,16 +21,20 @@ $items = loadAll();
 </head>
 <body>
 <div class="container">
-    <h3 class="text-center">Новости Украины</h3>
-    <form method="post">
-    <div class="input-group">
-        <input type="text" class="form-control" id="formGroupExampleInput" name="search" placeholder="Поиск">
-        <div class="input-group-append">
-            <button type="submit" class="btn btn-primary">Найти</button>
-            </button>
-        </div>
-    </div>
-    </form>
+    <nav class="navbar navbar-light bg-light">
+  <span class="navbar-text">
+    <?=getExchanges() ?>
+  </span>
+        <nav class="navbar navbar-light bg-light justify-content-between">
+            <a class="navbar-brand">Navbar</a>
+            <form class="form-inline">
+                <input name="limit" type="hidden" value="<?=$_GET['limit'] ?? '' ?>"/>
+                <input class="form-control mr-sm-2" name="search" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+        </nav>
+    </nav>
+    <h3>Новости Украины</h3>
     <ul class="nav justify-content-end">
         <li class="nav-item">
             <a class="nav-link" href="?limit=5">6</a>
@@ -46,15 +47,20 @@ $items = loadAll();
         </li>
     </ul>
     <ol>
-    <?php foreach ($items as $article) : ?>
-<!--        --><?php //if(!empty($_POST['search'])){
-//            $article = searchFunction($article);
-//        } ?>
-        <li><a href="<?=$article->link?>" target="_blank"><?=$article->title ?></a>
-        <p><?=$article->description?></p>
-        </li>
-    <?php endforeach; ?>
+        <?php foreach ($items as $key => $article) : ?>
+            <div class="card" style="width: 16rem;float:left">
+                <img class="card-img-top" src="<?=$article->image ?>" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title"><?=$article->title ?></h5>
+                    <p class="card-text"><?=$article->description ?></p>
+                    <a href="<?=$article->title ?>" class="btn btn-primary"><?=$article->title ?></a>
+                </div>
+            </div>
+        <?php endforeach; ?>
     </ol>
 </div>
 </body>
 </html>
+<!--        --><?php //if(!empty($_POST['search'])){
+//            $article = searchFunction($article);
+//        } ?>
