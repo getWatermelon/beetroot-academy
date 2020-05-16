@@ -1,0 +1,5 @@
+exi
+<?php
+phpinfo();
+exit;
+
