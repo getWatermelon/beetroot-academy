@@ -1,15 +1,7 @@
 <?php
+require 'functions.php';
+$books = getBooks();
 
-$pdo = new PDO("mysql:dbname=bookstore;host=127.0.0.1;charset=utf8mb4", 'root', '', [
-    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-]);
-
-$query = 'SELECT b.id, b.title, g.`name`, a.`name` FROM bookstore.book AS b
-          left join bookstore.genre AS g ON b.genre_id  = g.id
-          left join bookstore.author AS a ON b.author_id  = a.id
-          ORDER BY b.id';
-
-$result = $pdo->query($query);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -30,12 +22,12 @@ $result = $pdo->query($query);
             <th>Author</th>
         </tr>
         <tbody>
-        <?php foreach ($result as $key => $row) : ?>
+        <?php foreach ($books as $key => $row) : ?>
             <tr style="background-color: <?= ($key % 2 === 0) ? '#aaa' : '#fff' ?>">
-                <td><?= $row[0] ?></td>
-                <td><?= $row[1] ?></td>
-                <td><?= $row[2] ?></td>
-                <td><?= $row[3] ?></td>
+                <td><?= $row['book_id'] ?></td>
+                <td><a href="/page.php?book_id=<?=$row['book_id']?>"><?= htmlspecialchars($row['title'] )?></td>
+                <td><?= $row['name'] ?></td>
+                <td><?= $row['genre_name'] ?></td>
             </tr>
         <?php endforeach; ?>
         </tbody>
