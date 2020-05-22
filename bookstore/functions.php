@@ -28,7 +28,7 @@ function getBooks() : array
 
 function getBookById($bookId)
 {
-    $query = "SELECT b.id book_id, b.title, g.`name` genre_name, a.`name` FROM bookstore.book AS b
+    $query = "SELECT b.id book_id, b.title, b.genre_id, g.`name` genre_name, a.`name` FROM bookstore.book AS b
           left join bookstore.genre AS g ON b.genre_id  = g.id
           left join bookstore.author AS a ON b.author_id  = a.id
           WHERE b.id = ?

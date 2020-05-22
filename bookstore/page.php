@@ -66,7 +66,7 @@ $comments = getComments($_GET['book_id']);
             <h1 class="my-4">Shop Name</h1>
             <div class="list-group">
                 <?php foreach (getGenres() as $genre) : ?>
-                <a href="#" class="list-group-item <?=(($genre['name']) === $book['genre_name']) ? "active" : ""?>"><?=$genre['name']?></a>
+                <a href="#" class="list-group-item <?=(($genre['id']) === $book['genre_id']) ? 'active' : ''?>"><?=$genre['name']?></a>
                 <?php endforeach; ?>
             </div>
         </div>
