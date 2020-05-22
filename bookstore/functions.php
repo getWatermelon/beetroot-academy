@@ -1,4 +1,5 @@
 <?php
+
 function getPDO()
 {
     $pdo = new PDO("mysql:dbname=bookstore;host=127.0.0.1;charset=utf8mb4", 'root', '', [
@@ -46,3 +47,27 @@ function getGenres()
     $result = $pdo->query($query);
     return $result->fetchALL(PDO::FETCH_ASSOC);
 }
+
+function getComments($bookId)
+{
+    $query = "SELECT message, rating FROM bookstore.comment
+              WHERE book_id = ? 
+              ";
+    $pdo = getPDO();
+    $result = $pdo->prepare($query);
+    $result->execute([$bookId]);
+    $result->setFetchMode(PDO::FETCH_ASSOC);
+    return $result->fetchAll();
+}
+
+function getStars($rating)
+{
+    $stars = ['&#9734;', '&#9734;', '&#9734;', '&#9734;', '&#9734;'];
+
+    for($i = 0; $i < $rating; $i++){
+        $stars[$i] = '&#9733;';
+    }
+
+    return implode(" ", $stars);
+}
+
