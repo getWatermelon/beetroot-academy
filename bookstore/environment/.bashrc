@@ -129,3 +129,5 @@ echo
 
 echo "Apache Version: "
 apache2 -v | head -n 1 | cut -d " " -f 3
+
+cd /var/www/html

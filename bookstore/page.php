@@ -5,7 +5,6 @@ $book = getBookById($_GET['book_id']);
 
 $comments = getComments($_GET['book_id']);
 
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -30,32 +29,7 @@ $comments = getComments($_GET['book_id']);
 <body>
 
 <!-- Navigation -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-    <div class="container">
-        <a class="navbar-brand" href="#">Start Bootstrap</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Home
-                        <span class="sr-only">(current)</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">About</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Services</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Contact</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+
 
 <!-- Page Content -->
 <div class="container">
@@ -66,7 +40,8 @@ $comments = getComments($_GET['book_id']);
             <h1 class="my-4">Shop Name</h1>
             <div class="list-group">
                 <?php foreach (getGenres() as $genre) : ?>
-                <a href="#" class="list-group-item <?=(($genre['id']) === $book['genre_id']) ? 'active' : ''?>"><?=$genre['name']?></a>
+                    <a href="#"
+                       class="list-group-item <?= (($genre['id']) === $book['genre_id']) ? 'active' : '' ?>"><?= $genre['name'] ?></a>
                 <?php endforeach; ?>
             </div>
         </div>
@@ -77,11 +52,11 @@ $comments = getComments($_GET['book_id']);
             <div class="card mt-4">
                 <img class="card-img-top img-fluid" src="http://placehold.it/900x400" alt="">
                 <div class="card-body">
-                    <h3 class="card-title"><?=$book['title']?></h3>
-<!--                    <h4>$24.99</h4>-->
-<!--                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente dicta fugit fugiat hic aliquam itaque facere, soluta. Totam id dolores, sint aperiam sequi pariatur praesentium animi perspiciatis molestias iure, ducimus!</p>-->
-<!--                    <span class="text-warning">&#9733; &#9733; &#9733; &#9733; &#9734;</span>-->
-<!--                    4.0 stars-->
+                    <h3 class="card-title"><?= $book['title'] ?></h3>
+                    <!--                    <h4>$24.99</h4>-->
+                    <!--                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente dicta fugit fugiat hic aliquam itaque facere, soluta. Totam id dolores, sint aperiam sequi pariatur praesentium animi perspiciatis molestias iure, ducimus!</p>-->
+                    <!--                    <span class="text-warning">&#9733; &#9733; &#9733; &#9733; &#9734;</span>-->
+                    <!--                    4.0 stars-->
                 </div>
             </div>
             <!-- /.card -->
@@ -92,13 +67,22 @@ $comments = getComments($_GET['book_id']);
                     Product Reviews
                 </div>
                 <div class="card-body">
-                <?php foreach ($comments as $comment): ?>
-                    <p><?=$comment['message'] ?></p>
-                    <span class="text-warning"><?=getStars($comment['rating']) ?></span>
-                    <?=$comment['rating'] ?> stars
-                    <hr>
-                <?php endforeach; ?>
-                <a href="#" class="btn btn-success">Leave a Review</a>
+                    <?php foreach ($comments as $comment): ?>
+                        <p><?= $comment['message'] ?></p>
+                        <span class="text-warning"><?= getStars($comment['rating']) ?></span>
+                        <?= $comment['rating'] ?> stars
+                        <small> Posted on <?=formatCommentDate($comment['added_at']) ?></small>
+                        <hr>
+                    <?php endforeach; ?>
+                    <form method="post" action="comment.php">
+                        <div class="form-group">
+                            <input name="book_id" type="hidden" value="<?=htmlspecialchars($_GET['book_id'])?>">
+                            <label for="exampleFormControlTextarea1">Leave your comment</label>
+                            <textarea class="form-control" name="comment" id="exampleFormControlTextarea1" rows="3"
+                                      required></textarea>
+                        </div>
+                        <button type="submit" href="comment.php" class="btn btn-success">Добавить</button>
+                    </form>
                 </div>
             </div>
 
@@ -116,7 +100,7 @@ $comments = getComments($_GET['book_id']);
 <!-- Footer -->
 <footer class="py-5 bg-dark">
     <div class="container">
-        <p class="m-0 text-center text-white">Copyright &copy; Your Website 2019</p>
+        <p class="m-0 text-center text-white">Copyright &copy; Your Website 2020</p>
     </div>
     <!-- /.container -->
 </footer>

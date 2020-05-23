@@ -1,4 +1,1 @@
-.idea
-.vagrant
-tmp/*
-!tmp/.gitkeep
+node_modules
