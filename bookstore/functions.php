@@ -10,16 +10,22 @@ function getPDO()
     return $pdo;
 }
 
-function getBooks(): array
+function getBooks(array $ids = []): array
 {
     $page = getPageNumber();
     $offset = ($page - 1) * ITEMS_PER_PAGE;
 
-    $query = 'SELECT b.id book_id, b.title, g.`name` genre_name, a.`name` FROM bookstore.book AS b
+    $query = "SELECT b.id book_id, b.title, g.`name` genre_name, a.`name`, b.cost FROM bookstore.book AS b
           left join bookstore.genre AS g ON b.genre_id  = g.id
           left join bookstore.author AS a ON b.author_id  = a.id
-          ORDER BY b.id LIMIT ' . $offset . ', 8
-          ';
+          %s
+          ORDER BY b.id LIMIT $offset, 8
+          ";
+    $where = '';
+    if (!empty($ids)) {
+        $where = sprintf('WHERE b.id IN (%s)', implode(', ', $ids));
+    }
+    $query = sprintf($query, $where);
     $pdo = getPDO();
     $result = $pdo->query($query);
     $result->setFetchMode(PDO::FETCH_ASSOC);
@@ -32,7 +38,15 @@ function getBooks(): array
 
 function getBookById($bookId)
 {
-    $query = "SELECT b.id book_id, b.title, b.genre_id, g.`name` genre_name, a.`name` FROM bookstore.book AS b
+
+    if ($bookId < 1) {
+        $bookId = 1;
+    }
+    if ($bookId > 99) {
+        $bookId = 99;
+    }
+
+    $query = "SELECT b.id book_id, b.title, b.genre_id, g.`name` genre_name, a.`name`, b.cost FROM bookstore.book AS b
           left join bookstore.genre AS g ON b.genre_id  = g.id
           left join bookstore.author AS a ON b.author_id  = a.id
           WHERE b.id = ?
@@ -79,7 +93,7 @@ function addComment($comment, $bookId)
 {
     $sql = "INSERT INTO `comment` (message, book_id) VALUES (:comment, :book)";
     $pdo = getPDO();
-    $stmt = $pdo->prepare($sql);;
+    $stmt = $pdo->prepare($sql);
     $stmt->execute([
         'comment' => $comment,
         'book' => $bookId
@@ -93,7 +107,7 @@ function formatCommentDate(string $data): string
     return date('n/j/y', $time);
 }
 
-function getPageNumber()
+function getPageNumber(): int
 {
     $page = $_GET['page'] ?? 1;
     $total = getTotal();
@@ -102,18 +116,17 @@ function getPageNumber()
     } elseif ($page > $total) {
         $page = $total;
     }
-    return (int)$page;
+    return $page;
 }
 
 function paginate()
 {
-    $page = getPageNumber();
     $pageCount = (int)getTotal();
     $buttons = "";
 
     $startPos = getPageNumber();
     for ($i = 0; $i < 2; $i++) {
-        if($startPos === 1) {
+        if ($startPos === 1) {
             break;
         }
         $startPos--;
@@ -121,7 +134,7 @@ function paginate()
 
     $endPos = getPageNumber();
     for ($i = 0; $i < 2; $i++) {
-        if($endPos === $pageCount) {
+        if ($endPos === $pageCount) {
             break;
         }
         $endPos++;
@@ -163,4 +176,68 @@ function getTotal()
         return $count;
     }
     return $count;
+}
+
+function addToCart($bookId, int $count = 1)
+{
+    $cart = [];
+    if (isset($_COOKIE['cart'])) {
+        $cart = json_decode($_COOKIE['cart'], true);
+    }
+    if (!isset($cart[$bookId])) {
+        $cart[$bookId] = 0;
+    }
+    $cart[$bookId] += $count;
+    setcookie('cart', json_encode($cart), time() + 60 * 60 * 24 * 365);
+}
+
+function getItemsCount()
+{
+    $total = 0;
+    if (!empty($_COOKIE['cart'])) {
+        $cart = json_decode($_COOKIE['cart'], true);
+//        foreach ($cart as $count) {
+//            $total += $count;
+//        }
+        $total = array_sum($cart);
+    }
+    return $total;
+}
+
+function getCartItems()
+{
+    $books = [];
+    if (!empty($_COOKIE['cart'])) {
+        $cart = json_decode($_COOKIE['cart'], true);
+        $ids = array_keys($cart);
+        $books = getBooks($ids);
+        foreach ($books as &$book) {
+            $book['count'] = $cart[$book['book_id']];
+        }
+    }
+    return $books;
+}
+
+function deleteCartItem($deleteId)
+{
+    $cart = json_decode($_COOKIE['cart'], true);
+    unset($cart[$deleteId]);
+    if (!empty($cart)) {
+        setcookie('cart', json_encode($cart));
+
+    } else {
+        setcookie('cart', '');
+    }
+}
+
+function getTotalCost()
+{
+    $cost = 0;
+    if (!empty($_COOKIE['cart'])) {
+        $books = getCartItems();
+        foreach ($books as $book) {
+            $cost += $book['cost'] * $book['count'];
+        }
+    }
+    return $cost;
 }
