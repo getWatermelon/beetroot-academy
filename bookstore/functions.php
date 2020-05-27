@@ -226,7 +226,7 @@ function deleteCartItem($deleteId)
         setcookie('cart', json_encode($cart));
 
     } else {
-        setcookie('cart', '');
+        setcookie('cart', '', time() - 1);
     }
 }
 

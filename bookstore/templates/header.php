@@ -7,7 +7,7 @@
         </button>
         <form method="post" action="cart.php">
             <button type="submit" class="btn btn-success">
-                Корзина <span class="badge badge-light"><?= getItemsCount() ?></span>
+                Корзина <span class="badge badge-light"><?=getItemsCount() ?></span>
                 <span class="sr-only">unread messages</span>
             </button>
         </form>
