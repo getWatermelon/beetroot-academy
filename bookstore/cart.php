@@ -1,5 +1,8 @@
 <?php
 require 'functions.php';
+//if (!empty($_POST)) {
+    $orderId = createOrder();
+//}
 
 ?>
 
@@ -71,8 +74,9 @@ require 'functions.php';
                             <div class="col-xs-2"><img class="img-responsive" src="http://placehold.it/100x70">
                             </div>
                             <div class="col-xs-4">
-                                <h4 class="product-name"><strong><?= $item['title'] ?></strong></h4><h4><small><?='Жанр: ' . $item['genre_name'] . ', Автор: ' . $item['name']?>
-                                       </small></h4>
+                                <h4 class="product-name"><strong><?= $item['title'] ?></strong></h4><h4>
+                                    <small><?= 'Жанр: ' . $item['genre_name'] . ', Автор: ' . $item['name'] ?>
+                                    </small></h4>
                             </div>
                             <div class="col-xs-6">
                                 <div class="col-xs-6 text-right">
@@ -109,12 +113,22 @@ require 'functions.php';
                 <div class="panel-footer">
                     <div class="row text-center">
                         <div class="col-xs-9">
-                            <h4 class="text-right">Total <strong><?= getTotalCost() ?></strong></h4>
+                            <h4 class="text-right">Total <strong><?= getOrderTotal() ?> UAH</strong></h4>
                         </div>
                         <div class="col-xs-3">
-                            <button type="button" class="btn btn-success btn-block">
-                                Checkout
-                            </button>
+                            <form method="POST" accept-charset="utf-8" action="https://www.liqpay.ua/api/3/checkout">
+                                <input type="hidden" name="data"
+                                       value="<?=getData($orderId) ?>"/>
+                                <input type="hidden" name="signature" value="<?=getSignature($orderId) ?>"/>
+                                <button style="border: none !important; display:inline-block !important;text-align: center !important;padding: 7px 20px !important;
+		color: #fff !important; font-size:16px !important; font-weight: 600 !important; font-family:OpenSans, sans-serif; cursor: pointer !important; border-radius: 2px !important;
+		background: rgb(122,183,43) !important;" onmouseover="this.style.opacity='0.5';"
+                                        onmouseout="this.style.opacity='1';">
+                                    <img src="https://static.liqpay.ua/buttons/logo-small.png" name="btn_text"
+                                         style="margin-right: 7px !important; vertical-align: middle !important;"/>
+                                    <span style="vertical-align:middle; !important">Оплатить <?= getOrderTotal() ?> UAH</span>
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>

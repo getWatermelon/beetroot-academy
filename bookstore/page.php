@@ -82,7 +82,7 @@ $comments = getComments($_GET['book_id']);
                         <p><?= $comment['message'] ?></p>
                         <span class="text-warning"><?= getStars($comment['rating']) ?></span>
                         <?= $comment['rating'] ?> stars
-                        <small> Posted on <?= formatCommentDate($comment['added_at']) ?></small>
+                        <small> Posted on <?=formatCommentDate($comment['added_at']) ?></small>
                         <hr>
                     <?php endforeach; ?>
                     <form method="post" action="comment.php">

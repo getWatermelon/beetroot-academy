@@ -1,6 +1,8 @@
 <?php
 
 define('ITEMS_PER_PAGE', 8);
+define('PUB_KEY', 'sandbox_i93994735163');
+define('PRIVATE_KEY', 'sandbox_4NGoJapkzYG3akmvwD7yKVgEFvovYsnLKDWWQuwM');
 
 function getPDO()
 {
@@ -224,15 +226,20 @@ function deleteCartItem($deleteId)
     unset($cart[$deleteId]);
     if (!empty($cart)) {
         setcookie('cart', json_encode($cart));
-
     } else {
         setcookie('cart', '', time() - 1);
     }
 }
 
-function getTotalCost()
+
+/**
+ * get total cost of order
+ *
+ * @return float|int
+ */
+function getOrderTotal()
 {
-    $cost = 0;
+    $cost = 0.0;
     if (!empty($_COOKIE['cart'])) {
         $books = getCartItems();
         foreach ($books as $book) {
@@ -241,3 +248,66 @@ function getTotalCost()
     }
     return $cost;
 }
+
+/**
+ * crete order with books
+ *
+ * @return int
+ */
+function createOrder() : int
+{
+    $items = getCartItems();
+    $sql = "INSERT INTO `order` VALUES()";
+    $pdo = getPDO();
+    $pdo->query($sql);
+    $orderId = $pdo->lastInsertId();
+
+    $sql = 'INSERT INTO order_book (order_id, book_id, count) VALUES(?, ?, ?)';
+    $stmt = $pdo->prepare($sql);
+    foreach ($items as $item) {
+        $stmt->execute([
+            $orderId,
+            $item['book_id'],
+            $item['count']
+        ]);
+    }
+    return $orderId;
+}
+
+function getData($orderId)
+{
+    $json_string = sprintf(
+        '{"public_key":"%s",
+                "version":"3",
+                "action":"pay",
+                "amount":"%s",
+                "currency":"UAH",
+                "description":"Ваша покупка",
+                "order_id":"%s"}',
+                PUB_KEY,
+                getOrderTotal(),
+                $orderId
+        );
+    return base64_encode($json_string);
+}
+
+function getSignature($orderId)
+{
+    return base64_encode(sha1( PRIVATE_KEY . getData($orderId) . PRIVATE_KEY, true));
+}
+
+
+//function getOrderInfo(){
+//    $sql = "SELECT o.order_id, o.added_at, o.`status`, ob.count, b.title  FROM bookstore.`order` AS o
+//            JOIN bookstore.order_book AS ob ON o.order_id  = ob.order_id
+//            JOIN bookstore.book AS b ON ob.book_id = b.id
+//            WHERE o.order_id = (SELECT MAX(order_id) from `order`)";
+//    $pdo = getPDO();
+//    $result = $pdo->query($sql);
+//    $info =  $result->fetchALL();
+//    $books = [];
+//    foreach ($info as $row) {
+//        $books[] = $row;
+//    }
+//    return $books;
+//}

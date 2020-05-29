@@ -2,6 +2,8 @@
 
 require 'functions.php';
 
-deleteCartItem($_POST['deleted_book_id']);
+if(!empty($_COOKIE['cart'])) {
+    deleteCartItem($_POST['deleted_book_id']);
+}
 
 header('Location: /cart.php');
