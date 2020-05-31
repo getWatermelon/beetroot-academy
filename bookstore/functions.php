@@ -65,7 +65,7 @@ function getGenres()
     $query = 'SELECT id, name FROM genre';
     $pdo = getPDO();
     $result = $pdo->query($query);
-    return $result->fetchALL(PDO::FETCH_ASSOC);
+    return $result->fetchAll(PDO::FETCH_ASSOC);
 }
 
 function getComments($bookId)
@@ -277,7 +277,8 @@ function createOrder() : int
 function getData($orderId)
 {
     $json_string = sprintf(
-        '{"public_key":"%s",
+        '{"result_url":"http://localhost:8080/callback.php",
+                "public_key":"%s",
                 "version":"3",
                 "action":"pay",
                 "amount":"%s",
@@ -294,6 +295,50 @@ function getData($orderId)
 function getSignature($orderId)
 {
     return base64_encode(sha1( PRIVATE_KEY . getData($orderId) . PRIVATE_KEY, true));
+}
+
+function updateOrder(string $data)
+{
+    $paymentData = json_decode(base64_decode($data), true);
+    $orderId = $paymentData['order_id'];
+    $amount = $paymentData['amount'];
+    $status = $paymentData['status'];
+    if ($status == 'failure' || $status == 'try_again') {
+        $status = 'failed';
+    }
+    $sql = "UPDATE `order` SET `status` = :status, amount = :amount WHERE order_id = :order_id";
+    $pdo = getPDO();
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([
+        'status' => $status,
+        'order_id' => $orderId,
+        'amount' => $amount
+    ]);
+    return [$orderId, $status];
+}
+
+function getPaymentStatusMessage()
+{
+    if (!empty($_SESSION['order_id'])) {
+        $sql = 'SELECT * FROM `order` WHERE order_id = ?';
+        $pdo = getPDO();
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$_SESSION['order_id']]);
+        $order = $stmt->fetch(PDO::FETCH_ASSOC);
+        if($order['status'] == 'failed') {
+            $message = sprintf("При заказе произошла ошибка. Заказ на сумму %s не оплачен", $order['amount']);
+        }
+        if($order['status'] == 'success') {
+            $message = sprintf("Заказ успешно прошел. Заказ на сумму %s оплачен", $order['amount']);
+        }
+        $message .= "
+        <script>
+          $('#exampleModalCenter').modal('show')
+        </script>
+        ";
+        unset($_SESSION['order_id']);
+        return $message;
+    }
 }
 
 
