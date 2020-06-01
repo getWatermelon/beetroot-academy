@@ -56,5 +56,5 @@ function getBestMonthEarnings()
     $stmt = $pdo->query($sql);
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
     $monthes = getMonthes();
-    return [ $monthes[$row['mnth'] - 1], $row['total'] ];
+    return [$monthes[$row['mnth'] - 1], $row['total']];
 }
