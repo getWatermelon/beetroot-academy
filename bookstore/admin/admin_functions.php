@@ -1,10 +1,10 @@
 <?php
 
-require  '../functions.php';
+require '../functions.php';
 
-function getMonthes()
+function getMonths()
 {
-    return  $monthes = [
+    return $monthes = [
         'Январь',
         'Февраль',
         'Март',
@@ -36,15 +36,16 @@ function getTotalEarnings()
     return $stmt->fetch(PDO::FETCH_COLUMN);
 }
 
-function getEarningLastMonth(){
+function getEarningLastMonth()
+{
     $sql = "SELECT month(added_at) mnth, sum(`amount`) total FROM `order` where status='success' group by mnth
             order by mnth desc limit 1
             ";
     $pdo = getPDO();
     $stmt = $pdo->query($sql);
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    $monthes = getMonthes();
-    return [ $monthes[$row['mnth'] - 1], $row['total'] ];
+    $months = getMonths();
+    return [$months[$row['mnth'] - 1], $row['total']];
 }
 
 function getBestMonthEarnings()
@@ -55,6 +56,8 @@ function getBestMonthEarnings()
     $pdo = getPDO();
     $stmt = $pdo->query($sql);
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    $monthes = getMonthes();
-    return [$monthes[$row['mnth'] - 1], $row['total']];
+    $months = getMonths();
+    return [$months[$row['mnth'] - 1], $row['total']];
 }
+
+
