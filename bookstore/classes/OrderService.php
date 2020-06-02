@@ -12,7 +12,7 @@ class OrderService
      */
     public function getOrders(): array
     {
-        $sql = "SELECT ob.order_id, group_concat(b.title SEPARATOR ',') books, o.added_at, o.`status`, IFNULL(o.amount,0) amount  FROM bookstore.order_book ob
+        $sql = "SELECT ob.order_id, GROUP_CONCAT(b.title SEPARATOR ',') books, o.added_at, o.`status`, IFNULL(o.amount,0) amount  FROM bookstore.order_book ob
                 JOIN bookstore.`order` o ON ob.order_id = o.order_id
                 JOIN bookstore.book b ON ob.book_id = b.id
                 GROUP BY ob.order_id
