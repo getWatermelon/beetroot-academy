@@ -29,9 +29,9 @@ class OrderService
     public function getBookIdByName($bookNames)
     {
         $bookNames = explode(',', $bookNames);
-        $bookNames = implode('","', $bookNames);
+        $bookNames = '"' . implode('","', $bookNames) . '"';
         $sql = "SELECT id, title FROM bookstore.book
-                WHERE title IN (\"%s\")";
+                WHERE title IN (%s)";
         $sql = sprintf($sql, $bookNames);
         $pdo = getPDO();
         $result = $pdo->query($sql);
