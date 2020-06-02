@@ -21,7 +21,6 @@ class OrderService
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-
     /**
      * @param $bookNames
      * @return array
