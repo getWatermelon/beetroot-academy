@@ -27,8 +27,12 @@ class OrderService
      * @return array
      */
 
-
-
+    public function getBookIdByName($bookIds, $bookNames)
+    {
+        $bookIds = explode(',', $bookIds);
+        $bookNames = explode(',', $bookNames);
+        return array_combine($bookIds, $bookNames);
+    }
 
 //    public function getBookIdByName($bookNames)
 //    {
@@ -41,12 +45,5 @@ class OrderService
 //        $result = $pdo->query($sql);
 //        return $result->fetchAll(PDO::FETCH_ASSOC);
 //    }
-
-    public function getBookIdByName($bookIds, $bookNames)
-    {
-        $bookIds = explode(',', $bookIds);
-        $bookNames = explode(',', $bookNames);
-        return array_combine($bookIds, $bookNames);
-    }
 
 }
