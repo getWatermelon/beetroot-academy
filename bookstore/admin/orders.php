@@ -406,8 +406,8 @@ $orders = $orderService->getOrders();
                                 <?php foreach ($orders as $order): ?>
                                     <tr>
                                         <td><?= $order['order_id'] ?></td>
-                                        <td><?php foreach ($orderService->getBookIdByName($order['books']) as $book): ?>
-                                                <li><a href="/page.php?book_id=<?= $book['id'] ?>"><?= $book['title'] ?>
+                                        <td><?php foreach ($orderService->getBookIdByName($order['book_ids'], $order['book_names']) as $id => $book): ?>
+                                                <li><a href="/page.php?book_id=<?= $id ?>"><?= $book ?>
                                                 </li>
                                             <?php endforeach; ?></td>
                                         <td><?= $order['added_at'] ?></td>

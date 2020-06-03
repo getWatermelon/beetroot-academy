@@ -12,7 +12,7 @@ class OrderService
      */
     public function getOrders(): array
     {
-        $sql = "SELECT ob.order_id, GROUP_CONCAT(b.title SEPARATOR ',') books, o.added_at, o.`status`, IFNULL(o.amount,0) amount  FROM bookstore.order_book ob
+        $sql = "SELECT ob.order_id, GROUP_CONCAT(b.id SEPARATOR ',') book_ids, GROUP_CONCAT(b.title SEPARATOR ',') book_names, o.added_at, o.`status`, IFNULL(o.amount,0) amount  FROM bookstore.order_book ob
                 JOIN bookstore.`order` o ON ob.order_id = o.order_id
                 JOIN bookstore.book b ON ob.book_id = b.id
                 GROUP BY ob.order_id
@@ -26,16 +26,27 @@ class OrderService
      * @param $bookNames
      * @return array
      */
-    public function getBookIdByName($bookNames)
+
+
+
+
+//    public function getBookIdByName($bookNames)
+//    {
+//        $bookNames = explode(',', $bookNames);
+//        $bookNames = '"' . implode('","', $bookNames) . '"';
+//        $sql = "SELECT id, title FROM bookstore.book
+//                WHERE title IN (%s)";
+//        $sql = sprintf($sql, $bookNames);
+//        $pdo = getPDO();
+//        $result = $pdo->query($sql);
+//        return $result->fetchAll(PDO::FETCH_ASSOC);
+//    }
+
+    public function getBookIdByName($bookIds, $bookNames)
     {
+        $bookIds = explode(',', $bookIds);
         $bookNames = explode(',', $bookNames);
-        $bookNames = '"' . implode('","', $bookNames) . '"';
-        $sql = "SELECT id, title FROM bookstore.book
-                WHERE title IN (%s)";
-        $sql = sprintf($sql, $bookNames);
-        $pdo = getPDO();
-        $result = $pdo->query($sql);
-        return $result->fetchAll(PDO::FETCH_ASSOC);
+        return array_combine($bookIds, $bookNames);
     }
 
 }
