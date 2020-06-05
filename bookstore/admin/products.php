@@ -1,9 +1,6 @@
 <?php
 require 'admin_functions.php';
-require '../classes/OrderService.php';
 require '../classes/ProductService.php';
-$orderService = new OrderService();
-$orders = $orderService->getOrders();
 ?>
 
 <!DOCTYPE html>
@@ -271,35 +268,34 @@ $orders = $orderService->getOrders();
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                 <tr>
-                                    <th>Номер</th>
-                                    <th>Книги</th>
-                                    <th>Дата</th>
-                                    <th>Статис</th>
+                                    <th>ID Товара</th>
+                                    <th>Название</th>
                                     <th>Стоимость</th>
+                                    <th>Автор</th>
+                                    <th>Жанр</th>
+                                    <th>Действие</th>
                                 </tr>
                                 </thead>
                                 <tfoot>
                                 <tr>
-                                    <th>Номер</th>
-                                    <th>Книги</th>
-                                    <th>Дата</th>
-                                    <th>Статис</th>
+                                    <th>ID Товара</th>
+                                    <th>Название</th>
                                     <th>Стоимость</th>
+                                    <th>Автор</th>
+                                    <th>Жанр</th>
+                                    <th>Действие</th>
                                 </tr>
                                 </tfoot>
                                 <tbody>
-                                <?php foreach ($orders as $order): ?>
+                                <?php $service = new ProductService(false)?>
+                                <?php foreach ($service->getProductsList() as $product): ?>
                                     <tr>
-                                        <td><?= $order['order_id'] ?></td>
-                                        <td><li><?= $order['books'] ?></li></td>
-<!--                                        <td>--><?php //foreach ($orderService->getBookIdByName($order['book_ids'], $order['book_names']) as $id => $book): ?>
-<!--                                                <li>-->
-<!--                                                    <a href="/page.php?book_id=--><?//= $id ?><!--">--><?//= $book ?>
-<!--                                                </li>-->
-<!--                                            --><?php //endforeach; ?><!--</td>-->
-                                        <td><?= $order['added_at'] ?></td>
-                                        <td><?= $order['status'] ?></td>
-                                        <td><?= $order['amount'] ?></td>
+                                        <td><?= $product['book_id'] ?></td>
+                                        <td><?= $product['title'] ?></td>
+                                        <td><?= $product['cost'] ?></td>
+                                        <td><?= $product['name'] ?></td>
+                                        <td><?= $product['genre_name'] ?></td>
+                                        <td><a href="/admin/product_edit.php?book_id=<?=$product['book_id']?>">Редактировать <a href="#">Удалить</td>
                                     </tr>
                                 <?php endforeach; ?>
                                 </tbody>

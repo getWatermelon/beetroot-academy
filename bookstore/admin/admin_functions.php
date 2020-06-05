@@ -4,7 +4,7 @@ require '../functions.php';
 
 function getMonths()
 {
-    return $monthes = [
+    return $months = [
         'Январь',
         'Февраль',
         'Март',

@@ -14,50 +14,26 @@ function getPDO()
 
 function getBooks(array $ids = []): array
 {
-    $page = getPageNumber();
-    $offset = ($page - 1) * ITEMS_PER_PAGE;
-
-    $query = "SELECT b.id book_id, b.title, g.`name` genre_name, a.`name`, b.cost FROM bookstore.book AS b
-          left join bookstore.genre AS g ON b.genre_id  = g.id
-          left join bookstore.author AS a ON b.author_id  = a.id
-          %s
-          ORDER BY b.id LIMIT $offset, 8
-          ";
-    $where = '';
-    if (!empty($ids)) {
-        $where = sprintf('WHERE b.id IN (%s)', implode(', ', $ids));
-    }
-    $query = sprintf($query, $where);
-    $pdo = getPDO();
-    $result = $pdo->query($query);
-    $result->setFetchMode(PDO::FETCH_ASSOC);
-    $books = [];
-    foreach ($result as $row) {
-        $books[] = $row;
-    }
-    return $books;
+    require_once "classes/ProductService.php";
+    $class = new ProductService(false);
+    return $class->getProductsList($ids);
 }
 
-function getBookById($bookId)
+/**
+ * @param $bookId
+ * @return mixed
+ */
+function getBookById($bookId) : array
 {
-
     if ($bookId < 1) {
         $bookId = 1;
     }
     if ($bookId > 99) {
         $bookId = 99;
     }
-
-    $query = "SELECT b.id book_id, b.title, b.genre_id, g.`name` genre_name, a.`name`, b.cost FROM bookstore.book AS b
-          left join bookstore.genre AS g ON b.genre_id  = g.id
-          left join bookstore.author AS a ON b.author_id  = a.id
-          WHERE b.id = ?
-          ";
-    $pdo = getPDO();
-    $result = $pdo->prepare($query);
-    $result->execute([$bookId]);
-    $result->setFetchMode(PDO::FETCH_ASSOC);
-    return $result->fetch();
+    require "classes/ProductService.php";
+    $class = new ProductService();
+    return $class->getBookById($bookId);
 }
 
 function getGenres()
@@ -198,9 +174,6 @@ function getItemsCount()
     $total = 0;
     if (!empty($_COOKIE['cart'])) {
         $cart = json_decode($_COOKIE['cart'], true);
-//        foreach ($cart as $count) {
-//            $total += $count;
-//        }
         $total = array_sum($cart);
     }
     return $total;
@@ -342,17 +315,3 @@ function getPaymentStatusMessage()
 }
 
 
-//function getOrderInfo(){
-//    $sql = "SELECT o.order_id, o.added_at, o.`status`, ob.count, b.title  FROM bookstore.`order` AS o
-//            JOIN bookstore.order_book AS ob ON o.order_id  = ob.order_id
-//            JOIN bookstore.book AS b ON ob.book_id = b.id
-//            WHERE o.order_id = (SELECT MAX(order_id) from `order`)";
-//    $pdo = getPDO();
-//    $result = $pdo->query($sql);
-//    $info =  $result->fetchALL();
-//    $books = [];
-//    foreach ($info as $row) {
-//        $books[] = $row;
-//    }
-//    return $books;
-//}
