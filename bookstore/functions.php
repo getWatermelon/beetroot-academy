@@ -340,7 +340,7 @@ function getPaymentStatusMessage()
 function getBookUrl(array $book)
 {
     if(!empty($book)) {
-        return "/page/" . $book['book_id'];
+        return "/page/{$book['book_id']}";
     }
 }
 

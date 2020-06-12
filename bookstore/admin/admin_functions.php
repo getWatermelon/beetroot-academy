@@ -67,7 +67,7 @@ function getBestMonthEarnings()
 function getProductEditUrl(array $product)
 {
     if(!empty($product['book_id'])) {
-        return "/admin/product/edit/" . $product['book_id'];
+        return "/admin/product/edit/{$product['book_id']}";
     }
 }
 
@@ -78,7 +78,7 @@ function getProductEditUrl(array $product)
 function getProductDeleteUrl(array $product)
 {
     if(!empty($product['book_id'])) {
-        return "/admin/product/delete/" . $product['book_id'];
+        return "/admin/product/delete/{$product['book_id']}";
     }
 }
 
