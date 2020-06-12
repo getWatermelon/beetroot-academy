@@ -1,4 +1,5 @@
 <?php
+require 'vendor/autoload.php';
 
 define('ITEMS_PER_PAGE', 8);
 define('PUB_KEY', 'sandbox_i93994735163');
@@ -287,6 +288,28 @@ function updateOrder(string $data)
         'order_id' => $orderId,
         'amount' => $amount
     ]);
+    // Create the Transport
+    $transport = (new Swift_SmtpTransport('smtp.gmail.com', 465, 'ssl'))
+        ->setUsername('bookstore.beetroot@gmail.com')
+        ->setPassword('beetroot123')
+    ;
+
+// Create the Mailer using your created Transport
+    $mailer = new Swift_Mailer($transport);
+
+// Create a message
+    ob_start();
+    require 'my-email-template.php';
+    $email = ob_get_clean();
+
+    $message = (new Swift_Message('Заказ на сайте'))
+        ->setFrom(['bookstore.beetroot@gmail.com' => 'Магазин'])
+        ->setTo(['ivan-myasoyedov@stud.onu.edu.ua'])
+        ->setBody($email, 'text/html')
+    ;
+
+// Send the message
+    $result = $mailer->send($message);
     return [$orderId, $status];
 }
 
@@ -311,6 +334,13 @@ function getPaymentStatusMessage()
         ";
         unset($_SESSION['order_id']);
         return $message;
+    }
+}
+
+function getBookUrl(array $book)
+{
+    if(!empty($book)) {
+        return "/page/" . $book['book_id'];
     }
 }
 

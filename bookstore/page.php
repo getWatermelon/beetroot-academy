@@ -5,7 +5,6 @@ $book = getBookById($_GET['book_id']);
 
 $comments = getComments($_GET['book_id']);
 
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -20,10 +19,10 @@ $comments = getComments($_GET['book_id']);
     <title>Shop Item - Start Bootstrap Template</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="../css/shop-item.css" rel="stylesheet">
+    <link href="css/shop-item.css" rel="stylesheet">
 
 </head>
 
@@ -82,7 +81,7 @@ $comments = getComments($_GET['book_id']);
                         <p><?= $comment['message'] ?></p>
                         <span class="text-warning"><?= getStars($comment['rating']) ?></span>
                         <?= $comment['rating'] ?> stars
-                        <small> Posted on <?=formatCommentDate($comment['added_at']) ?></small>
+                        <small> Posted on <?= formatCommentDate($comment['added_at']) ?></small>
                         <hr>
                     <?php endforeach; ?>
                     <form method="post" action="comment.php">
@@ -117,8 +116,8 @@ $comments = getComments($_GET['book_id']);
 </footer>
 
 <!-- Bootstrap core JavaScript -->
-<script src="../vendor/jquery/jquery.min.js"></script>
-<script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="assets/jquery/jquery.min.js"></script>
+<script src="assets/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 </body>
 

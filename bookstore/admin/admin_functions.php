@@ -60,4 +60,25 @@ function getBestMonthEarnings()
     return [$months[$row['mnth'] - 1], $row['total']];
 }
 
+/**
+ * @param array $product
+ * @return string
+ */
+function getProductEditUrl(array $product)
+{
+    if(!empty($product['book_id'])) {
+        return "/admin/product/edit/" . $product['book_id'];
+    }
+}
+
+/**
+ * @param array $product
+ * @return string
+ */
+function getProductDeleteUrl(array $product)
+{
+    if(!empty($product['book_id'])) {
+        return "/admin/product/delete/" . $product['book_id'];
+    }
+}
 

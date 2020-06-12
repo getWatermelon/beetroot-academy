@@ -30,8 +30,23 @@ class OrderService
 
         $pdo = getPDO();
         $stmt = $pdo->query($sql);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $resultArr = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $colorizeFunc = function ($status, $color) {
+            if ($status == 'failed') {
+                return "<span style='color:$color'>$status</span>";
+            }
+            return $status;
+        };
+        return array_map(function($order) use ($colorizeFunc) {
+            $order['status'] = $colorizeFunc($order['status'], 'red');
+            return  $order;
+        }, $resultArr);
     }
+
+//        foreach ($resultArr as &$product) {
+//            $product['status'] = $colorizeFunc($product['status'], 'red');
+//        }
+//        return $resultArr;
 
 //    /**
 //     * @param $bookNames

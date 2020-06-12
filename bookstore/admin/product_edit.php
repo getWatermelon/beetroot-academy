@@ -1,13 +1,15 @@
 <?php
 require 'admin_functions.php';
-require '../classes/ProductService.php';
-require '../classes/GenreService.php';
-$productService =  new ProductService();
+//require '../classes/ProductService.php';
+//require '../classes/GenreService.php';
+require '../vendor/autoload.php';
+
+$productService =  new ProductService(false);
 if(empty($_GET['book_id'])) {
     die('Bad URL');
 }
 if(!empty($_POST)) {
-    $productService->update($_GET('book_id'), $_POST);
+    $productService->update($_GET['book_id'], $_POST);
 }
 $book = $productService->getBookById($_GET['book_id']);
 $genreService = new GenreService();
@@ -27,11 +29,11 @@ $genreList = $genreService->getGenresStats();
     <title>SB Admin 2 - Forgot Password</title>
 
     <!-- Custom fonts for this template-->
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="assets/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="assets/css/sb-admin-2.min.css" rel="stylesheet">
 
 </head>
 
@@ -62,7 +64,7 @@ $genreList = $genreService->getGenresStats();
                                         <input type="text" name="name" value="<?=$book['name']?>" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Автор">
                                     </div>
                                     <div class="form-group">
-                                        <select id="inputState" class="form-control">
+                                        <select id="inputState" name="genre_name" class="form-control">
                                             <option selected>Выберите жанр...</option>
                                             <?php foreach ($genreList as $genre) : ?>
                                             <option <?=$genre['name'] == $book['genre_name'] ? 'selected' : '' ?>><?=$genre['name']?></option>
@@ -90,14 +92,14 @@ $genreList = $genreService->getGenresStats();
 </div>
 
 <!-- Bootstrap core JavaScript-->
-<script src="vendor/jquery/jquery.min.js"></script>
-<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="assets/jquery/jquery.min.js"></script>
+<script src="assets/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 <!-- Core plugin JavaScript-->
-<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+<script src="assets/jquery-easing/jquery.easing.min.js"></script>
 
 <!-- Custom scripts for all pages-->
-<script src="js/sb-admin-2.min.js"></script>
+<script src="assets/js/sb-admin-2.min.js"></script>
 
 </body>
 

@@ -1,0 +1,21 @@
+{
+    "name": "vagrant/html",
+    "description": "My Bookstore project",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Ivan",
+            "email": "ivan.mjasoyedov@gmail.com"
+        }
+    ],
+    "autoload": {
+        "classmap": [
+            "classes/ProductService.php",
+            "classes/OrderService.php",
+            "classes/GenreService.php"
+        ]
+    },
+    "require": {
+        "swiftmailer/swiftmailer": "^6.0"
+    }
+}

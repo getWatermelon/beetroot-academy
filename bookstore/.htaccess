@@ -1,0 +1,22 @@
+RewriteEngine on
+AddType application/x-httpd-php .php
+
+# for page.php page
+RewriteRule ^page/(\d+)/?$ page.php?book_id=$1
+
+# for css and js files
+RewriteRule ^page/(\d+/)?(.*\.(css|js))$ /$2
+
+# for add_to_cart.php, comment.php, index.php pages
+RewriteRule ^page/(\d+/)?(.*\.(php))$ /$2
+
+# for product_edit.php page
+RewriteRule ^admin/product/edit/(\d+)/?$ /admin/product_edit.php?book_id=$1
+
+# for product_delete.php page
+RewriteRule ^admin/product/delete/(\d+)/?$ /admin/product_delete.php?book_id=$1
+
+# for /admin/ css, js, woff2, woff, ttf files
+RewriteRule ^admin/product/edit/(\d+/)?(.*\.(css|js|woff2|woff|ttf))$ /admin/$2
+
+
