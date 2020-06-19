@@ -67,7 +67,7 @@ return array (
     'password' => '12345678',
     'gender' => 'Man',
     'avatar' => 'https://i.grenka.ua/shop/1/5/641/php-slon-sinij_0cc_300_300.png',
-    'animals' => 
+    'animals' =>
     array (
     ),
   ),
