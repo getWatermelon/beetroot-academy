@@ -27,7 +27,7 @@ class ProductService
         $page = getPageNumber();
         $offset = ($page - 1) * ITEMS_PER_PAGE;
 
-        $query = "SELECT b.id book_id, b.title, g.`name` genre_name, a.`name`, b.cost FROM bookstore.book AS b
+        $query = "SELECT b.url, b.id book_id, b.title, g.`name` genre_name, a.`name`, b.cost FROM bookstore.book AS b
           left join bookstore.genre AS g ON b.genre_id  = g.id
           left join bookstore.author AS a ON b.author_id  = a.id
           %s
@@ -118,6 +118,20 @@ class ProductService
         }
         throw new Exception('Something wrong with product edit');
 
+    }
+
+    public function getBookByUrl($url) : array
+    {
+        $query = "SELECT b.id book_id, b.title, b.genre_id, g.`name` genre_name, a.`name`, b.cost FROM bookstore.book AS b
+          left join bookstore.genre AS g ON b.genre_id  = g.id
+          left join bookstore.author AS a ON b.author_id  = a.id
+          WHERE b.url = ?
+          ";
+        $pdo = getPDO();
+        $result = $pdo->prepare($query);
+        $result->execute([$url]);
+        $result->setFetchMode(PDO::FETCH_ASSOC);
+        return $result->fetch();
     }
 
 }

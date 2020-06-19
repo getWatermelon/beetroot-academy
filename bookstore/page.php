@@ -1,10 +1,19 @@
 <?php
+require 'vendor/autoload.php';
 require 'functions.php';
-
-$book = getBookById($_GET['book_id']);
-
+try {
+    if(!empty($_GET['book_id'])) {
+        $book = getBookById($_GET['book_id']);
+    } else if (!empty($_GET['url'])) {
+        $book = getBookByUrl($_GET['url']);
+    } else {
+        throw new \Exception('');
+    }
+} catch (\Throwable $err) {
+    header("HTTP/1.1 404 Not Found");
+    exit();
+}
 $comments = getComments($_GET['book_id']);
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -60,7 +69,7 @@ $comments = getComments($_GET['book_id']);
                     <span class="text-warning">&#9733; &#9733; &#9733; &#9733; &#9734;</span>
                     4.0 stars
                 </div>
-                <form class="form-inline" method="post" action="add_to_cart.php">
+                <form class="form-inline" method="post" action="/add_to_cart.php">
                     <div class="form-group">
                         <input type="hidden" name="book_id" value="<?= $book['book_id'] ?>">
                         <label for="count">Количество: </label>

@@ -118,6 +118,9 @@ fi
 
 #echo -e "\e[0;31mHello \e[0m"
 
+export XDEBUG_CONFIG="remote_enable=1 remote_mode=req remote_port=9000 remote_host=10.0.2.2 remote_connect_back=0"
+export PHP_IDE_CONFIG="serverName=localhost"
+
 echo "Hello $USER"
 
 echo

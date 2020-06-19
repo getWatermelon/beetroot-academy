@@ -16,7 +16,7 @@ function getPDO()
 function getBooks(array $ids = []): array
 {
     require_once "classes/ProductService.php";
-    $class = new ProductService(false);
+    $class = new ProductService();
     return $class->getProductsList($ids);
 }
 
@@ -288,28 +288,8 @@ function updateOrder(string $data)
         'order_id' => $orderId,
         'amount' => $amount
     ]);
-    // Create the Transport
-    $transport = (new Swift_SmtpTransport('smtp.gmail.com', 465, 'ssl'))
-        ->setUsername('bookstore.beetroot@gmail.com')
-        ->setPassword('beetroot123')
-    ;
-
-// Create the Mailer using your created Transport
-    $mailer = new Swift_Mailer($transport);
-
-// Create a message
-    ob_start();
-    require 'my-email-template.php';
-    $email = ob_get_clean();
-
-    $message = (new Swift_Message('Заказ на сайте'))
-        ->setFrom(['bookstore.beetroot@gmail.com' => 'Магазин'])
-        ->setTo(['ivan-myasoyedov@stud.onu.edu.ua'])
-        ->setBody($email, 'text/html')
-    ;
-
-// Send the message
-    $result = $mailer->send($message);
+    $mailer = new Mailer();
+    $mailer->notifyOrder();
     return [$orderId, $status];
 }
 
@@ -340,8 +320,15 @@ function getPaymentStatusMessage()
 function getBookUrl(array $book)
 {
     if(!empty($book)) {
-        return "/page/{$book['book_id']}";
+        return "/page/{$book['url']}.html";
     }
 }
+
+function getBookByUrl($url)
+{
+    $books = new ProductService();
+    return $books -> getBookByUrl($url);
+}
+
 
 
