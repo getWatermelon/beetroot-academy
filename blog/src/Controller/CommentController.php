@@ -57,16 +57,16 @@ class CommentController extends AbstractController
      */
     public function addReply(Request $request, Article $article, Comment $comment): Response
     {
-        $reply = new Comment();
-        $entityManager = $this->getDoctrine()->getManager();
-        $reply->setArticle($article);
-        $reply->setReplyTo($comment);
-        $body = $request->request->get('body');
-        $reply->setBody($body);
-        $entityManager->persist($reply);
-        $entityManager->flush();
+            $reply = new Comment();
+            $entityManager = $this->getDoctrine()->getManager();
+            $reply->setArticle($article);
+            $reply->setReplyTo($comment);
+            $body = $request->request->get('comment');
+            $reply->setBody($body);
+            $entityManager->persist($reply);
+            $entityManager->flush();
 
-        return $this->redirectToRoute('article_show', ['id' => $article->getId()]);
+            return $this->redirectToRoute('article_show', ['id' => $article->getId()]);
     }
 
     /**
