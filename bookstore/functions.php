@@ -7,10 +7,15 @@ define('PRIVATE_KEY', 'sandbox_4NGoJapkzYG3akmvwD7yKVgEFvovYsnLKDWWQuwM');
 
 function getPDO()
 {
-    $pdo = new PDO("mysql:dbname=bookstore;host=127.0.0.1;charset=utf8mb4", 'root', '', [
+//    $pdo = new PDO("mysql:dbname=bookstore;host=127.0.0.1;charset=utf8mb4", 'root', '', [
+//        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+//    ]);
+//    return $pdo;
+    $pdo = new PDO("mysql:dbname=bookstore;host=mysql;charset=utf8mb4", 'bookstore', 'secret', [
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
     ]);
     return $pdo;
+
 }
 
 function getBooks(array $ids = []): array
