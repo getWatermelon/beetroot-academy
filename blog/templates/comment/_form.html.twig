@@ -1,5 +1,5 @@
 {#{% if article.id is defined %}#}
-{{ form_start(form,{"action": path('comment_new', {'id': article.id})}) }}
+{{ form_start(form,{"action": path('comment_new', {'id' : article.id, 'userId': app.user.id})}) }}
     <div class="my-custom-class-for-errors">
         {{ form_errors(form) }}
     </div>
