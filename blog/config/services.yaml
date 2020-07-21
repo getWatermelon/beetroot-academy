@@ -9,6 +9,18 @@ parameters:
     app.domain: '%env(PROJECT_DOMAIN)%'
 
 services:
+    # telegram logger bot
+    telegram_handler:
+        class: jacklul\MonologTelegramHandler\TelegramHandler
+        arguments:
+            - '1355413997:AAE6kN5ipj8oVSS7VGWUkO5hD6EhTX4aZq0'
+            - '-1001133854227'
+#        calls:
+#            - method: setFormatter
+#              arguments:
+#                  - '@telegram_formatter'
+#        telegram_formatter:
+#            class: jacklul\MonologTelegramHandler\TelegramFormatter
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.

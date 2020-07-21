@@ -70,6 +70,11 @@ class CommentController extends AbstractController
             $commentsLogger->info($comment->getBody(), [
                 'user' => $this->getUser()
             ]);
+
+//            $telegramLogger->info($comment->getBody(), [
+//                'user' => $this->getUser()
+//            ]);
+
             return $this->redirectToRoute('article_show', ['id' => $article->getId()]);
         }
 

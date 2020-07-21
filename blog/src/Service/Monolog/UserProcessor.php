@@ -14,7 +14,7 @@ class UserProcessor
     {
         /** @var User $user */
         $user = $record['context']['user'];
-        $record['message'] = "user: ({$user->getEmail()})" . " sent message: " . $record['message'];
+        $record['message'] = "user: ({$user->getEmail()})" . " sent a message: " . $record['message'];
         return $record;
     }
 

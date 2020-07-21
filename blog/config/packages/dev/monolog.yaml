@@ -16,6 +16,11 @@ monolog:
             channel: logger3282
             level: debug
             channels: ["comments"]
+        telegram:
+            level: debug
+            type: service
+            id: telegram_handler
+            channels: ["comments"]
         auth:
             type: stream
             path: "%kernel.logs_dir%/auth.log"

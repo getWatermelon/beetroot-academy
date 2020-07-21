@@ -96,6 +96,9 @@
     "fzaninotto/faker": {
         "version": "v1.9.1"
     },
+    "jacklul/monolog-telegram": {
+        "version": "2.0.0"
+    },
     "monolog/monolog": {
         "version": "2.1.0"
     },
