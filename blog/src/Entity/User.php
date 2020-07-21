@@ -46,20 +46,27 @@ class User implements UserInterface
     private $username;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isVerified = false;
+
+
+    /**
      * @ORM\Column(type="string", options={"default": "standart_avatar.png"})
      */
     private $image;
 
-//    public function __toString()
-//    {
-//        return $this->image;
-//    }
-//
-//    public function __construct()
-//    {
-//        $this->image = "standart_avatar.png";
-//
-//    }
+    /**
+     * @ORM\Column(type="boolean", options={"default": 1})
+     */
+    private $isSubscribed = 1;
+
+
+    public function __construct()
+    {
+        $this->isSubscriebed = 1;
+
+    }
 
     /**
      * @return string
@@ -69,10 +76,7 @@ class User implements UserInterface
         return $this->image;
     }
 
-//    public function __construct()
-//    {
-//        $this->image= 'standard_avatar.png';
-//    }
+
 
     /**
      * @param $image
@@ -104,19 +108,10 @@ class User implements UserInterface
     }
 
     /**
-     * @ORM\Column(type="boolean")
-     */
-    private $isVerified = false;
-
-    /**
      * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="name")
      */
     private $comments;
 
-    public function __construct()
-    {
-        $this->comments = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -145,20 +140,6 @@ class User implements UserInterface
         return (string) $this->email;
     }
 
-//    /**
-//     * @see UserInterface
-//     */
-//    public function getName(): string
-//    {
-//        return (string) $this->username;
-//    }
-//
-//    public function setName(string $username): self
-//    {
-//        $this->username = $username;
-//
-//        return $this;
-//    }
 
     /**
      * @see UserInterface
@@ -168,6 +149,7 @@ class User implements UserInterface
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_USER';
+//        $roles[] = 'ROLE_ADMIN';
 
         return array_unique($roles);
     }
@@ -223,18 +205,6 @@ class User implements UserInterface
         return $this;
     }
 
-//    public function setUsername(string $username): ?string
-//    {
-//        $this->username = $username;
-//
-//        return $this;
-//    }
-//
-//    public function getUsername(): string
-//    {
-//        return (string) $this->username;
-//    }
-
 
 /**
  * @return Collection|Comment[]
@@ -265,4 +235,76 @@ public function removeComment(Comment $comment): self
     }
 
     return $this;
-}}
+}
+
+    public function getIsSubscribed(): ?bool
+    {
+        return $this->isSubscribed;
+    }
+
+    public function setIsSubscribed(bool $isSubscribed): self
+    {
+        $this->isSubscribed = $isSubscribed;
+
+        return $this;
+    }
+
+    public function getAllRoles() : array
+    {
+        return [
+            'ROLE_USER',
+            'ROLE_ADMIN',
+        ];
+    }
+
+}
+
+
+//    public function setUsername(string $username): ?string
+//    {
+//        $this->username = $username;
+//
+//        return $this;
+//    }
+//
+//    public function getUsername(): string
+//    {
+//        return (string) $this->username;
+//    }
+
+//public function getIsSubscriebed(): ?bool
+//{
+//    return $this->isSubscriebed;
+//}
+
+//public function setIsSubscriebed(bool $isSubscriebed): self
+//{
+//    $this->is_subscriebed = $isSubscriebed;
+//
+//    return $this;
+//}
+
+//    /**
+//     * @see UserInterface
+//     */
+//    public function getName(): string
+//    {
+//        return (string) $this->username;
+//    }
+//
+//    public function setName(string $username): self
+//    {
+//        $this->username = $username;
+//
+//        return $this;
+//    }
+//    /**
+//     * @ORM\Column(type="boolean", {"default": 1})
+//     */
+//    private $isSubscriebed;
+
+//    public function __toString()
+//    {
+//        return $this->image;
+//    }
+//

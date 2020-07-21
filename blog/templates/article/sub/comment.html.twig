@@ -16,14 +16,14 @@
 
                     </p>
                     <div class="clearfix"></div>
-                    <p>{{ comment.body }}</p>
+                    <p>{{ comment.body|raw }}</p>
                     <p>
                         <a class="float-right btn btn-outline-primary ml-2" id="btn-reply"> <i class="fa fa-reply"></i> Reply</a>
                     <div class="fb-like" data-href="{{ facebook_domain }}"
                          data-width="" data-layout="button" data-action="like" data-size="large" data-share="false"></div>
                     </p>
                     {% if is_granted('ROLE_USER') %}
-                    <form name="comment" method="post" action="{{ path('add_reply', {'id' : article.id, 'commentId': comment.id, 'userId': app.user.id}) }}">
+                    <form name="comment" method="post" action="{{ path('add_reply', {'id' : article.id, 'commentId': comment.id}) }}">
 
                         <div class="form-group">
                             <label for="exampleFormControlTextarea1">Ответить</label>

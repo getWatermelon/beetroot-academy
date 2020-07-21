@@ -23,6 +23,10 @@
 
         ( {{ app.user.email }} )</p>
         <a class="float-left" style="padding-left: 30px; padding-right: 30px" href="{{ path('app_logout') }}"><strong>Exit</strong></a>
+        <a class="float-left" style="padding-left: 30px; padding-right: 30px" href="{{ path('profile_edit') }}"><strong>Edit Profile</strong></a>
+        {% if is_granted('ROLE_ADMIN') %}
+            <a class="float-left" style="padding-left: 30px; padding-right: 30px" href="{{ path('admin_index') }}"><strong>Admin edit</strong></a>
+        {% endif%}
     {% else %}
         <a class="float-left" style="padding-left: 30px;" href="{{ path('app_login') }}"><strong>Login</strong></a>
         <a class="float-left" style="padding-left: 30px;" href="{{ path('app_register') }}"><strong>Register</strong></a>

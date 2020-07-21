@@ -6,6 +6,8 @@ use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Security\EmailVerifier;
 use App\Security\LoginFormAuthenticator;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -22,9 +24,12 @@ class RegistrationController extends AbstractController
 {
     private $emailVerifier;
 
-    public function __construct(EmailVerifier $emailVerifier)
+    private $em;
+
+    public function __construct(EmailVerifier $emailVerifier, EntityManagerInterface $em)
     {
         $this->emailVerifier = $emailVerifier;
+        $this->em = $em;
     }
 
     /**
@@ -118,7 +123,30 @@ class RegistrationController extends AbstractController
 
         return $this->redirectToRoute('article_index');
     }
+
+    /**
+     * @Route("/verify/email/{id}", name="app_unsubscribe")
+     */
+    public function unsubscribe(User $user)
+    {
+        $user->setIsSubscribed(false);
+        $this->em->persist($user);
+        $this->em->flush();
+        return $this->redirectToRoute('article_index');
+    }
+
 }
+
+//    /**
+//     * @Route("/verify/email/{id}", name="app_unsubscribe")
+//     */
+//    public function unsubscribe(User $user)
+//    {
+//        $user->setIsSubscriebed(false);
+//        $this->em->persist($user);
+//        $this->em->flush();
+//        return $this->redirectToRoute('artile_index');
+//    }
 
 //            try {
 //                $file = $user->getImage();

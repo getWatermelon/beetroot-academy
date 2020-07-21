@@ -7,18 +7,38 @@ use App\Entity\Comment;
 use App\Entity\User;
 use App\Form\CommentType;
 use App\Repository\CommentRepository;
+use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGenerator;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * @Route("/comment")
  */
 class CommentController extends AbstractController
 {
+
+    private $mailer;
+
+    private $router;
+
+
+    public function __construct(MailerInterface $mailer, RouterInterface $router)
+    {
+        $this->mailer = $mailer;
+        $this->router = $router;
+    }
+
     /**
      * @Route("/", name="comment_index", methods={"GET"})
      */
@@ -30,10 +50,9 @@ class CommentController extends AbstractController
     }
 
     /**
-     * @Route("/new/{id}/{userId}", name="comment_new", methods={"POST"})
-     * @ParamConverter("user", options={"id" = "userId"})
+     * @Route("/new/{id}", name="comment_new", methods={"POST"})
      */
-    public function new(Request $request, Article $article, User $user): Response
+    public function new(Request $request, Article $article, LoggerInterface $commentsLogger): Response
     {
         $comment = new Comment();
         $form = $this->createForm(CommentType::class, $comment);
@@ -43,11 +62,14 @@ class CommentController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $comment->setArticle($article);
 
-            $comment->setName($user);
+            $comment->setName($this->getUser());
 
             $entityManager->persist($comment);
             $entityManager->flush();
 
+            $commentsLogger->info($comment->getBody(), [
+                'user' => $this->getUser()
+            ]);
             return $this->redirectToRoute('article_show', ['id' => $article->getId()]);
         }
 
@@ -58,27 +80,27 @@ class CommentController extends AbstractController
     }
 
     /**
-     * @Route("/reply/{id}/{commentId}/{userId}", name="add_reply", methods={"POST"})
+     * @Route("/reply/{id}/{commentId}", name="add_reply", methods={"POST"})
      * @ParamConverter("comment", options={"id" = "commentId"})
-     * @ParamConverter("user", options={"id" = "userId"})
      */
-    public function addReply(Request $request, Article $article, Comment $comment, User $user): Response
+    public function addReply(Request $request, Article $article, Comment $comment): Response
     {
-//        $submittedToken = $request->request->get('token');
-//
-//        // 'delete-item' is the same value used in the template to generate the token
-//        if ($this->isCsrfTokenValid('comment-token', $submittedToken)) {
-//            throw new BadRequestException('Bad CSRF token from comment received');
-//        }
+        $submittedToken = $request->request->get('token');
+
+        // 'delete-item' is the same value used in the template to generate the token
+        if (!$this->isCsrfTokenValid('comment-token', $submittedToken)) {
+            throw new BadRequestException('Bad CSRF token from comment received');
+        }
         $reply = new Comment();
         $entityManager = $this->getDoctrine()->getManager();
         $reply->setArticle($article);
-        $reply->setName($user);
+        $reply->setName($this->getUser());
         $reply->setReplyTo($comment);
         $body = $request->request->get('body');
         $reply->setBody($body);
         $entityManager->persist($reply);
         $entityManager->flush();
+        $this->sendNotification($reply);
 
         return $this->redirectToRoute('article_show', ['id' => $article->getId()]);
     }
@@ -125,5 +147,31 @@ class CommentController extends AbstractController
         }
 
         return $this->redirectToRoute('comment_index');
+    }
+
+    /**
+     * @param Comment $reply
+     */
+    private function sendNotification(Comment $reply)
+    {
+        $email = (new TemplatedEmail())
+            ->from('no-reply@symfony-blog.com.ua')
+            ->to(new Address($reply->getReplyTo()->getName()->getEmail(), 'Beetroot'))
+            ->subject('Someone replied to your comment')
+
+            // path of the Twig template to render
+            ->htmlTemplate('emails/reply.html.twig')
+
+            // pass variables (name => value) to the template
+            ->context([
+                'reply' => $reply,
+                'page_url' => $this->router->generate(
+                    'article_show',
+                    ['id' => $reply->getArticle()->getId()]
+                ),
+                UrlGeneratorInterface::ABSOLUTE_URL
+            ])
+        ;
+        $this->mailer->send($email);
     }
 }

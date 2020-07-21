@@ -36,6 +36,11 @@
                         <a href="{{ path('article_index') }}">back to list</a>
                         <a href="{{ path('article_edit', {'id': article.id}) }}">edit</a>
                     </p>
+                    <p>
+                        {% for tag in article.tags%}
+                            <a style="padding: 8px !important" href="{{ path('tag_article_show', {'id' : tag.id}) }}" class="{{ tag.color }}">#{{ tag.title }}</a>
+                        {% endfor %}
+                    </p>
                     <p class="post-meta">Posted by
                         <a href="#">Start Bootstrap</a>
                         on {{ article.createdAt|date('m/d/Y') }}
